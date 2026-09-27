@@ -1,0 +1,9 @@
+fastapi>=0.110
+uvicorn>=0.29
+numpy
+yt-dlp
+# Approach 1+2 voices (American + British English). First run downloads ~330 MB from Hugging Face.
+kokoro>=0.9
+soundfile
+# Approach 2 speech recognition. First run downloads the Whisper model.
+faster-whisper>=1.0

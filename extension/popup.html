@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  :root { color-scheme: light dark; --accent: #2563eb; --muted: #6b7280; --border: #d1d5db; }
+  @media (prefers-color-scheme: dark) { :root { --muted: #9ca3af; --border: #374151; } }
+  body { width: 300px; margin: 0; padding: 14px; font: 13px/1.4 system-ui, sans-serif; }
+  h1 { font-size: 15px; margin: 0 0 2px; }
+  .sub { color: var(--muted); margin-bottom: 12px; }
+  label { display: block; margin: 10px 0 4px; font-weight: 600; }
+  select, input[type=text] { width: 100%; box-sizing: border-box; padding: 6px; border: 1px solid var(--border); border-radius: 6px; background: transparent; color: inherit; }
+  .row { display: flex; justify-content: space-between; align-items: center; }
+  .row span { color: var(--muted); font-variant-numeric: tabular-nums; }
+  input[type=range] { width: 100%; }
+  .check { display: flex; gap: 6px; align-items: center; font-weight: normal; margin: 6px 0; }
+  button { width: 100%; margin-top: 14px; padding: 9px; border: 0; border-radius: 6px; background: var(--accent); color: #fff; font-weight: 600; cursor: pointer; }
+  button.stop { background: #dc2626; }
+  #status { margin-top: 10px; color: var(--muted); min-height: 1.4em; }
+  details { margin-top: 10px; } summary { cursor: pointer; color: var(--muted); }
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #9ca3af; margin-right: 4px; }
+  .dot.on { background: #16a34a; } .dot.off { background: #dc2626; }
+</style>
+</head>
+<body>
+  <h1>Accent Re-dub</h1>
+  <div class="sub"><span id="dot" class="dot"></span><span id="server-state">Checking local server…</span></div>
+
+  <label for="voice">Voice</label>
+  <select id="voice"></select>
+
+  <label for="mode">Transcript source</label>
+  <select id="mode">
+    <option value="auto">Captions, else Whisper (auto)</option>
+    <option value="captions">Captions only</option>
+    <option value="whisper">Always transcribe with Whisper</option>
+  </select>
+
+  <label class="row" for="maxSpeed">Max catch-up speed <span id="maxSpeed-v"></span></label>
+  <input type="range" id="maxSpeed" min="1" max="1.8" step="0.05">
+
+  <label class="row" for="volume">Voice volume <span id="volume-v"></span></label>
+  <input type="range" id="volume" min="0" max="1" step="0.05">
+
+  <label class="check"><input type="checkbox" id="showText"> Show dubbed sentence on video</label>
+  <label class="check"><input type="checkbox" id="waitForAudio"> Pause video while voice buffers</label>
+
+  <details>
+    <summary>Advanced</summary>
+    <label for="server">Server URL</label>
+    <input type="text" id="server">
+    <label class="row" for="lookahead">Prepare ahead <span id="lookahead-v"></span></label>
+    <input type="range" id="lookahead" min="10" max="120" step="5">
+  </details>
+
+  <button id="toggle">Re-dub this video</button>
+  <div id="status"></div>
+  <script type="module" src="popup.js"></script>
+</body>
+</html>

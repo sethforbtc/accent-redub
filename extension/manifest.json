@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "Accent Re-dub",
+  "version": "0.1.0",
+  "description": "Re-voices tutorial videos in the English accent you find easiest to follow, using local AI.",
+  "permissions": [
+    "storage",
+    "scripting",
+    "activeTab",
+    "offscreen"
+  ],
+  "host_permissions": [
+    "<all_urls>",
+    "http://127.0.0.1/*",
+    "http://localhost/*"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Accent Re-dub"
+  }
+}
