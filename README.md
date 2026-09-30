@@ -140,12 +140,27 @@ Matches are whole-word and case-sensitive. Restart the server after editing. Del
 
 ## Server options
 
-Set these as environment variables before `python app.py`. On Windows Command Prompt use `set NAME=value`, and on macOS/Linux use `export NAME=value`.
+The easiest way to change settings is a **`.env` file** in the `server` folder. It isn't uploaded to GitHub, so personal paths stay on your machine.
+
+1. In `server`, copy `.env.example` to `.env`. On Windows: `copy .env.example .env`
+2. Open it (`notepad .env`), remove the `#` in front of the lines you want, and edit the values.
+3. Restart the server.
+
+For example, to use a Whisper model you've already downloaded, rather than letting it download one:
+```
+REDUB_WHISPER_MODEL=C:\Models\faster-whisper-small
+REDUB_WHISPER_DEVICE=cpu
+REDUB_WHISPER_COMPUTE=int8
+```
+When `REDUB_WHISPER_MODEL` points to a folder, the model loads from that folder only and never goes online.
+
+You can also set these as ordinary environment variables, which take priority over `.env`.
 
 | Variable | Default | Purpose |
 |---|---|---|
-| `REDUB_WHISPER_MODEL` | `small.en` | `base.en` is faster; `medium.en` or `large-v3` are more accurate |
-| `REDUB_WHISPER_DEVICE` | `auto` | Set `cuda` to use an NVIDIA GPU |
+| `REDUB_WHISPER_MODEL` | `small.en` | A model name (`base.en` is faster; `medium.en` or `large-v3` are more accurate), or the path to a model folder you downloaded |
+| `REDUB_WHISPER_DEVICE` | `auto` | `cpu`, or `cuda` to use an NVIDIA GPU |
+| `REDUB_WHISPER_COMPUTE` | `int8` on CPU, `float16` on GPU | Precision; `int8` is fastest on CPU |
 | `REDUB_COOKIES_BROWSER` | *(none)* | e.g. `chrome`, which lets yt-dlp use your sign-in on course sites |
 | `REDUB_PORT` | `8765` | Port the server listens on |
 | `REDUB_HOST` | `127.0.0.1` | `0.0.0.0` to serve other machines on your network |
@@ -178,6 +193,8 @@ Set these as environment variables before `python app.py`. On Windows Command Pr
 ```
 server/
   app.py               API: /jobs (transcripts), /tts (voice), /voices, /health
+  settings.py          Loads your personal settings from .env
+  .env.example         Template for .env
   sources.py           Caption download (yt-dlp) and transcription (faster-whisper)
   segmenter.py         Turns captions/words into clean sentences
   tts.py               Voice backends (Kokoro, mock) and pronunciation fixes

@@ -11,3 +11,6 @@ server/cache/
 Thumbs.db
 .vscode/
 .idea/
+
+# Personal server settings
+server/.env

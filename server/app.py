@@ -17,6 +17,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
+import settings  # noqa: F401  (loads server/.env before other modules read settings)
 import sources
 from segmenter import cues_to_words, words_to_segments
 from tts import VOICES, KokoroTTS, MockTTS, apply_pronunciations, to_wav

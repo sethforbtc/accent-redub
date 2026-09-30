@@ -80,12 +80,22 @@ _whisper_models: dict = {}
 
 
 def _whisper(model_name: str):
+    """Load a Whisper model by name ("small.en") or from a local folder."""
     if model_name not in _whisper_models:
         from faster_whisper import WhisperModel
 
         device = os.environ.get("REDUB_WHISPER_DEVICE", "auto")
-        compute = "int8" if device in ("cpu", "auto") else "float16"
-        _whisper_models[model_name] = WhisperModel(model_name, device=device, compute_type=compute)
+        default_compute = "int8" if device in ("cpu", "auto") else "float16"
+        compute = os.environ.get("REDUB_WHISPER_COMPUTE", default_compute)
+        local = Path(model_name).expanduser().is_dir()
+        if not local and (os.sep in model_name or "/" in model_name or ":" in model_name):
+            raise FileNotFoundError(f"Whisper model folder not found: {model_name}")
+        _whisper_models[model_name] = WhisperModel(
+            str(Path(model_name).expanduser()) if local else model_name,
+            device=device,
+            compute_type=compute,
+            local_files_only=local,  # never go online for a model you already have
+        )
     return _whisper_models[model_name]
 
 
